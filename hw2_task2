@@ -1,0 +1,11 @@
+n = int(input())
+dist_home = 0
+dist = 0
+for i in range(1,n+1):
+    dist += 1/i
+    if i % 2 == 0:
+        dist_home -= 1/i
+    else:
+        dist_home += 1/i
+print('Мужчина прошел расстояние, находясь в смятении, равное:', round(dist,3),'км')
+print('Мужчина находится на расстоянии от дома, равном:', round(dist_home,3),'км')

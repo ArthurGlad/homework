@@ -1,0 +1,56 @@
+a0 = int(input())
+b0 = int(input())
+a1 = []
+b1 = []
+#Представляем первое число в виде списка
+while a0 > 0:
+    a1.append(a0 % 10)
+    a0 //= 10
+#Представляем второе число в виде списка
+while b0 > 0:
+    b1.append(b0 % 10)
+    b0 //= 10
+
+sum = []
+k = 0
+if len(a1) > len(b1):
+    while len(a1) > len(b1):
+        b1.append(0)
+elif len(a1) < len(b1):
+    while len(a1) < len(b1):
+        a1.append(0)
+
+for i,v in enumerate(a1):
+    a0 += v * 10 ** i
+for i,v in enumerate(b1):
+    b0 += v * 10 ** i
+
+if a0 >= b0:
+    for i in range(len(b1)):
+        if a1[i] == 0 and b1[i] == 0:
+            sum.append(0)
+        elif a1[i] == 0 and b1[i] > 0:
+            sum.append(10 - k - b1[i])
+            k = 1
+        elif a1[i] - k < b1[i]:
+            sum.append(10 + (a1[i] - k) - b1[i])
+            k = 1
+        else:
+            sum.append((a1[i] - k) - b1[i])
+            k = 0
+else:
+    for i in range(len(b1)):
+        if b1[i] - k == 0 and a1[i] == 0:
+            sum.append(0)
+        elif b1[i] - k == 0 and a1[i] > 0:
+            sum.append(10 - k - a1[i])
+            k = 1
+        elif b1[i] - k < a1[i]:
+            sum.append(10 + (b1[i] - k) - a1[i])
+            k = 1
+        elif b1[i] - k > a1[i]:
+            sum.append((b1[i] - k) - a1[i])
+            k = 0
+    sum.append('МИНУС')
+sum.reverse()
+print(sum)

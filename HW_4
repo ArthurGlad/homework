@@ -1,0 +1,125 @@
+import random
+class Warrior:
+    health_points = random.randint(100,150)
+    attack_power = random.randint(20,30)
+    def __init__(self,name):
+        self.name = name
+    def health(self):
+        print('Воин по имени {} имеет {} очков здоровья'.format(self.name, self.health_points))
+    def attack(self):
+        print('Воин по имени {} имеет {} очков атаки'.format(self.name, self.attack_power))
+    def taking_damage(self, t_attack):
+        self.health_points -= t_attack
+        if self.health_points <= 0:
+            print('{} получил {} урона и погиб'.format(self.name, t_attack))
+        else:
+            print('{} получил {} урона. Осталось {} здоровья.'.format(self.name, t_attack, self.health_points))
+class WarriorWithShield(Warrior):
+    defence = random.randint(5,10)
+    def __init__(self,name):
+        Warrior.__init__(self, name)
+    def health(self):
+        Warrior.health(self)
+    def attack(self):
+        Warrior.attack(self)
+    def taking_damage(self, t_attack):
+        self.health_points -= (t_attack - self.defence)
+        if self.health_points <= 0:
+            print('{} получил {} урона и погиб'.format(self.name, t_attack - self.defence))
+        else:
+            print('{} получил {} урона. Осталось {} здоровья.'.format(self.name, t_attack - self.defence, self.health_points))
+
+class WarriorElite(Warrior):
+    def __init__(self, name):
+        Warrior.__init__(self, name)
+        self.attack_power = int(random.choices([self.attack_power,self.attack_power *2],[0.8,0.2])[0])
+    def health(self):
+        Warrior.health(self)
+    def attack(self):
+        Warrior.attack(self)
+    def taking_damage(self, t_attack):
+        Warrior.taking_damage(self,t_attack)
+#Task1
+yarik = Warrior('Ярополк')
+ragnar = WarriorWithShield('Рагнар Лотброк')
+spartak = WarriorElite('Спартак')
+
+#Task2
+#бой между обычным войном и войном со щитом
+while yarik.health_points >= 0 and ragnar.health_points >= 0:
+    ragnar.taking_damage(yarik.attack_power)
+    if ragnar.health_points <= 0:
+        print('Победил {}'.format(yarik.name))
+        break
+    yarik.taking_damage(ragnar.attack_power)
+    if yarik.health_points <= 0:
+        print('Победил {}'.format(ragnar.name))
+        break
+print()
+
+#бой между войном со щитом и экспертом
+wwsh = WarriorWithShield('Бъорн')
+while wwsh.health_points >= 0 and spartak.health_points >= 0:
+    spartak.taking_damage(wwsh.attack_power)
+    if spartak.health_points <= 0:
+        print('Победил {}'.format(wwsh.name))
+        break
+    wwsh.taking_damage(spartak.attack_power)
+    if wwsh.health_points <= 0:
+        print('Победил {}'.format(spartak.name))
+        break
+print()
+
+#бой между обычным войном и экспертом
+w = Warrior('Святослав')
+we = WarriorElite('Джон Сноу')
+while w.health_points >= 0 and we.health_points >= 0:
+    we.taking_damage(w.attack_power)
+    if we.health_points <= 0:
+        print('Победил {}'.format(w.name))
+        break
+    w.taking_damage(we.attack_power)
+    if w.health_points <= 0:
+        print('Победил {}'.format(we.name))
+        break
+print()
+#Task3
+w11 = Warrior('w11')
+w12 = Warrior('w12')
+w13 = Warrior('w13')
+w14 = Warrior('w14')
+ws11 = WarriorWithShield('ws11')
+ws12 = WarriorWithShield('ws12')
+ws13 = WarriorWithShield('ws13')
+ws14 = WarriorWithShield('ws14')
+we11 = WarriorElite('we11')
+we12 = WarriorElite('we12')
+arm1 = [w11,w12,w13,w14,ws11,ws12,ws13,ws14,we11,we12]
+w21 = Warrior('w21')
+w22 = Warrior('w22')
+w23 = Warrior('w23')
+w24 = Warrior('w24')
+ws21 = WarriorWithShield('ws21')
+ws22 = WarriorWithShield('ws22')
+ws23 = WarriorWithShield('ws23')
+ws24 = WarriorWithShield('ws24')
+we21 = WarriorElite('we21')
+we22 = WarriorElite('we22')
+arm2 = [w21,w22,w23,w24,ws21,ws22,ws23,ws24,we21,we22]
+
+while len(arm1)>0 and len(arm2)>0:
+    i = random.randint(0,len(arm1)-1)
+    j = random.randint(0,len(arm2)-1)
+    while arm1[i].health_points > 0 or arm2[j].health_points > 0:
+        arm2[j].taking_damage(arm1[i].attack_power)
+        if arm2[j].health_points <=0:
+            del arm2[j]
+            break
+        arm1[i].taking_damage(arm2[j].attack_power)
+        if arm1[i].health_points <=0:
+            del arm1[i]
+            break
+if len(arm1) == 0:
+    print('Победу в битве одержала вторая армия')
+else:
+    print('Победу в битве одержала первая армия')
